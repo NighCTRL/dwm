@@ -99,6 +99,7 @@ static const Key keys[] = {
 	{ 0, XF86XK_Display,      		spawn,		{.v = (const char*[]){ "displayselect", NULL } } },
 	{ 0, XK_Insert,      		spawn,		    SHCMD("theme reverse") },
 	{ MODKEY, XK_Insert,      		spawn,		    SHCMD("theme change") },
+	{ MODKEY, XK_Delete,      		spawn,		    SHCMD("theme comp-toggle") },
 	// keys for azerty keyboard
 	{ MODKEY,                       XK_semicolon, focusmon,    {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_semicolon, tagmon,      {.i = +1 } },
