@@ -3,6 +3,11 @@
 /* appearance */
 static const unsigned int borderpx  = 3;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
+static const unsigned int gappih    = 10;       /* horiz inner gap between windows */
+static const unsigned int gappiv    = 10;       /* vert inner gap between windows */
+static const unsigned int gappoh    = 10;       /* horiz outer gap between windows and screen edge */
+static const unsigned int gappov    = 10;       /* vert outer gap between windows and screen edge */
+static       int smartgaps          = 1;        /* 1 means no outer gap when there is only one window */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const int showbar            = 0;        /* 0 means no bar */
 static const int topbar             = 0;        /* 0 means bottom bar */
@@ -41,11 +46,16 @@ static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
 
+#define FORCE_VSPLIT 1  /* nrowgrid layout: force two clients to always split vertically */
+#include "vanitygaps.c"
+
 static const Layout layouts[] = {
 	/* symbol     arrange function */
 	{ "[]=",      tile },    /* first entry is default */
-	{ "><>",      NULL },    /* no layout function means floating behavior */
 	{ "[M]",      monocle },
+	{ "|M|",      centeredmaster },
+	{ "><>",      NULL },    /* no layout function means floating behavior */
+	// { NULL,       NULL },
 };
 
 /* key definitions */
@@ -92,7 +102,8 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_e,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_r,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[2]} },
-	{ MODKEY,                       XK_y,  setlayout,      {0} },
+	{ MODKEY,                       XK_y,      setlayout,      {.v = &layouts[3]} },
+	{ MODKEY,                       XK_u,  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
@@ -107,9 +118,11 @@ static const Key keys[] = {
 	{ 0, XF86XK_AudioPlay,		    spawn,		{.v = (const char*[]){ "playerctl", "play-pause", NULL } } },
 	{ 0, XK_F7,                     spawn,		{.v = (const char*[]){ "st", "-e", "pulsemixer", NULL } } },
 	{ 0, XF86XK_Display,      		spawn,		{.v = (const char*[]){ "displayselect", NULL } } },
-	{ 0, XK_Insert,      		spawn,		    SHCMD("theme reverse") },
-	{ MODKEY, XK_Insert,      		spawn,		    SHCMD("theme change") },
-	{ MODKEY, XK_Delete,      		spawn,		    SHCMD("theme comp-toggle") },
+	{ 0, XF86XK_Search,             spawn,		{.v = (const char*[]){ "passmenu", NULL } } },
+	{ 0, XK_Insert,      		    spawn,	    SHCMD("theme reverse") },
+	{ MODKEY, XK_Insert,      		spawn,	    SHCMD("theme change") },
+	{ MODKEY, XK_Delete,      		spawn,	    SHCMD("theme comp-toggle") },
+	{ MODKEY|ShiftMask,             XK_BackSpace, quit,        {0} },
 	// keys for azerty keyboard
 	{ MODKEY,                       XK_semicolon, focusmon,    {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_semicolon, tagmon,      {.i = +1 } },
@@ -125,6 +138,10 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_egrave,                 6)
 	TAGKEYS(                        XK_underscore,             7)
 	TAGKEYS(                        XK_ccedilla,               8)
+	{ MODKEY|Mod4Mask,              XK_k,      incrgaps,       {.i = +5 } },
+	{ MODKEY|Mod4Mask,              XK_j,      incrgaps,       {.i = -5 } },
+	{ MODKEY|Mod4Mask,              XK_t,      togglegaps,     {0} },
+	{ MODKEY|Mod4Mask,              XK_d,      defaultgaps,    {0} },
 	// keys for us keyboard
 	// { MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
 	// { MODKEY,                       XK_period, focusmon,       {.i = +1 } },
@@ -139,8 +156,19 @@ static const Key keys[] = {
 	// TAGKEYS(                        XK_7,                      6)
 	// TAGKEYS(                        XK_8,                      7)
 	// TAGKEYS(                        XK_9,                      8)
-	{ MODKEY|ShiftMask,             XK_BackSpace, quit,        {0} },
-	{ 0, XF86XK_Search,             spawn,		{.v = (const char*[]){ "passmenu", NULL } } },
+	// keys not in use
+	// { MODKEY|Mod4Mask,              XK_i,      incrigaps,      {.i = +1 } },
+	// { MODKEY|Mod4Mask|ShiftMask,    XK_i,      incrigaps,      {.i = -1 } },
+	// { MODKEY|Mod4Mask,              XK_o,      incrogaps,      {.i = +1 } },
+	// { MODKEY|Mod4Mask|ShiftMask,    XK_o,      incrogaps,      {.i = -1 } },
+	// { MODKEY|Mod4Mask,              XK_minus,      incrihgaps,     {.i = +1 } },
+	// { MODKEY|Mod4Mask|ShiftMask,    XK_minus,      incrihgaps,     {.i = -1 } },
+	// { MODKEY|Mod4Mask,              XK_egrave,      incrivgaps,     {.i = +1 } },
+	// { MODKEY|Mod4Mask|ShiftMask,    XK_egrave,      incrivgaps,     {.i = -1 } },
+	// { MODKEY|Mod4Mask,              XK_underscore,      incrohgaps,     {.i = +1 } },
+	// { MODKEY|Mod4Mask|ShiftMask,    XK_underscore,      incrohgaps,     {.i = -1 } },
+	// { MODKEY|Mod4Mask,              XK_ccedilla,      incrovgaps,     {.i = +1 } },
+	// { MODKEY|Mod4Mask|ShiftMask,    XK_ccedilla,      incrovgaps,     {.i = -1 } },
 };
 
 /* button definitions */
