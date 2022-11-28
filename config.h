@@ -12,8 +12,8 @@ static const int swallowfloating    = 0;        /* 1 means swallow floating wind
 static const int showbar            = 0;        /* 0 means no bar */
 static const int topbar             = 0;        /* 0 means bottom bar */
 static const int viewonrulestag 	= 1;		 /* 1 means when open applications view will move to tags defined in rules*/
-static const char *fonts[]          = { "monospace:size=10" };
-static const char dmenufont[]       = "monospace:size=10";
+static const char *fonts[]          = { "monospace:size=13" };
+static const char dmenufont[]       = "monospace:size=13";
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
@@ -110,9 +110,9 @@ static const Key keys[] = {
 	// media keys
 	{ 0, XF86XK_MonBrightnessUp,	spawn,		{.v = (const char*[]){ "light", "-A", "10", NULL } } },
 	{ 0, XF86XK_MonBrightnessDown,	spawn,		{.v = (const char*[]){ "light", "-U", "10", NULL } } },
-	{ 0, XF86XK_AudioMute,		    spawn,		SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle") },
-	{ 0, XF86XK_AudioRaiseVolume,	spawn,		SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 3%+") },
-	{ 0, XF86XK_AudioLowerVolume,	spawn,		SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 3%-") },
+	{ 0, XF86XK_AudioMute,		    spawn,		SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && changedvolume") },
+	{ 0, XF86XK_AudioRaiseVolume,	spawn,		SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 3%+ && changedvolume") },
+	{ 0, XF86XK_AudioLowerVolume,	spawn,		SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 3%- && changedvolume") },
 	{ 0, XF86XK_AudioPrev,		    spawn,		{.v = (const char*[]){ "playerctl", "position", "10-", NULL } } },
 	{ 0, XF86XK_AudioNext,		    spawn,		{.v = (const char*[]){  "playerctl", "position", "10+", NULL } } },
 	{ 0, XF86XK_AudioPlay,		    spawn,		{.v = (const char*[]){ "playerctl", "play-pause", NULL } } },
