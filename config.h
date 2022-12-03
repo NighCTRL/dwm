@@ -92,8 +92,8 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,                       XK_b,      togglebar,      {0} },
 	STACKKEYS(MODKEY,                          focus)
 	STACKKEYS(MODKEY|ShiftMask,                push)
-	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
-	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
+	{ MODKEY|ShiftMask,             XK_i,      incnmaster,     {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_d,      incnmaster,     {.i = -1 } },
 	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
 	{ MODKEY,                       XK_Return, zoom,           {0} },
@@ -107,12 +107,15 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
-	// media keys
+	{ MODKEY,                       XK_m,      spawn,		{.v = (const char*[]){ "st", "-e", "htop", NULL } } },
+	{ MODKEY,                       XK_v,      spawn,		SHCMD("vpn-connect") },
+	{ MODKEY,                       XK_f,      spawn,		{.v = (const char*[]){ "st", "-e", "lfub", NULL } } },
+  // media keys
 	{ 0, XF86XK_MonBrightnessUp,	spawn,		{.v = (const char*[]){ "light", "-A", "10", NULL } } },
 	{ 0, XF86XK_MonBrightnessDown,	spawn,		{.v = (const char*[]){ "light", "-U", "10", NULL } } },
-	{ 0, XF86XK_AudioMute,		    spawn,		SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && changedvolume") },
-	{ 0, XF86XK_AudioRaiseVolume,	spawn,		SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 3%+ && changedvolume") },
-	{ 0, XF86XK_AudioLowerVolume,	spawn,		SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 3%- && changedvolume") },
+	{ 0, XF86XK_AudioMute,		    spawn,		SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && status-volume") },
+	{ 0, XF86XK_AudioRaiseVolume,	spawn,		SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ && status-volume") },
+	{ 0, XF86XK_AudioLowerVolume,	spawn,		SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- && status-volume") },
 	{ 0, XF86XK_AudioPrev,		    spawn,		{.v = (const char*[]){ "playerctl", "position", "10-", NULL } } },
 	{ 0, XF86XK_AudioNext,		    spawn,		{.v = (const char*[]){  "playerctl", "position", "10+", NULL } } },
 	{ 0, XF86XK_AudioPlay,		    spawn,		{.v = (const char*[]){ "playerctl", "play-pause", NULL } } },
