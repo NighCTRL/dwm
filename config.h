@@ -12,7 +12,7 @@ static const int swallowfloating    = 0;        /* 1 means swallow floating wind
 static const int showbar            = 0;        /* 0 means no bar */
 static const int topbar             = 0;        /* 0 means bottom bar */
 static const int viewonrulestag 	= 1;		 /* 1 means when open applications view will move to tags defined in rules*/
-static const char *fonts[]          = { "monospace:size=13" };
+static const char *fonts[]          = { "FiraCode Nerd Font Mono:size=12" };
 static const char dmenufont[]       = "monospace:size=13";
 static char normbgcolor[]           = "#222222";
 static char normbordercolor[]       = "#444444";
@@ -72,17 +72,17 @@ static const Layout layouts[] = {
 	{ MOD, XK_grave, ACTION##stack, {.i = PREVSEL } }, \
 	{ MOD, XK_q,     ACTION##stack, {.i = 0 } }, \
 	{ MOD, XK_a,     ACTION##stack, {.i = 1 } }, \
-	{ MOD, XK_z,     ACTION##stack, {.i = 2 } }, \
-	{ MOD, XK_x,     ACTION##stack, {.i = -1 } },
+	{ MOD, XK_z,     ACTION##stack, {.i = 2 } }, 
+	// { MOD, XK_x,     ACTION##stack, {.i = -1 } },
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
 static const char *terminal[]  = { "st", NULL };
-static const char *browser[]  = { "librewolf", NULL };
+static const char *browser[]  = { "librewolf-bin", NULL };
 
 #include <X11/XF86keysym.h>
 static const Key keys[] = {
@@ -100,17 +100,19 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_Return, zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
-	{ MODKEY,                       XK_e,      setlayout,      {.v = &layouts[0]} },
-	{ MODKEY,                       XK_r,      setlayout,      {.v = &layouts[1]} },
-	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[2]} },
-	{ MODKEY,                       XK_y,      setlayout,      {.v = &layouts[3]} },
-	{ MODKEY,                       XK_u,  setlayout,      {0} },
+	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
+	{ MODKEY,                       XK_y,      setlayout,      {.v = &layouts[1]} },
+	{ MODKEY,                       XK_u,      setlayout,      {.v = &layouts[2]} },
+	{ MODKEY,                       XK_i,      setlayout,      {.v = &layouts[3]} },
+	{ MODKEY|ShiftMask,             XK_f,  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
-	{ MODKEY,                       XK_m,      spawn,		{.v = (const char*[]){ "st", "-e", "htop", NULL } } },
-	{ MODKEY,                       XK_v,      spawn,		SHCMD("vpn-connect") },
+	{ MODKEY,                       XK_r,      spawn,		{.v = (const char*[]){ "st", "-e", "htop", NULL } } },
+	// { MODKEY,                       XK_v,      spawn,		SHCMD("vpn-connect") },
 	{ MODKEY,                       XK_f,      spawn,		{.v = (const char*[]){ "st", "-e", "lfub", NULL } } },
+	{ MODKEY,                       XK_m,      spawn,		{.v = (const char*[]){ "st", "-e", "ncmpcpp", NULL } } },
+	{ MODKEY,                       XK_e,      spawn,		{.v = (const char*[]){ "st", "-e", "aerc", NULL } } },
   // media keys
 	{ 0, XF86XK_MonBrightnessUp,	spawn,		{.v = (const char*[]){ "light", "-A", "10", NULL } } },
 	{ 0, XF86XK_MonBrightnessDown,	spawn,		{.v = (const char*[]){ "light", "-U", "10", NULL } } },
